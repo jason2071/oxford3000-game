@@ -1,1 +1,18 @@
+# OS
 .DS_Store
+Thumbs.db
+
+# Editor / IDE
+.idea/
+*.swp
+.vscode/
+
+# Claude Code local
+.claude/
+
+# Playwright / test artifacts
+.playwright-mcp/
+*.png
+
+# Logs
+*.log
