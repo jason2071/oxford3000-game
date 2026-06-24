@@ -136,6 +136,11 @@ function speak(text){
   try{const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=.9;
     speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}
 }
+// Single source of truth for the 🔊 listen button. Modes where the English
+// is the answer call hideSpeak() during play, then showSpeak() after answering.
+function showSpeak(text){const b=$("speak-btn");if(!text){hideSpeak();return;}
+  b.classList.remove("hidden");b.onclick=()=>speak(text);}
+function hideSpeak(){const b=$("speak-btn");b.classList.add("hidden");b.onclick=null;}
 function showNote(t){
   const el=$("s-note");
   if(!t){el.classList.add("hidden");el.textContent="";return;}
@@ -173,8 +178,7 @@ function renderQ(){
     $("hint").textContent=curVar()==="audio2en"?"ฟังแล้วเลือกคำที่ได้ยิน":"ฟังแล้วเลือกคำแปล";
     $("q-main").textContent="🔊";
     $("q-ipa").textContent="";$("q-pr").textContent="";
-    $("speak-btn").classList.remove("hidden");
-    $("speak-btn").onclick=()=>speak(w.en);
+    showSpeak(w.en);
     $("q-main").onclick=()=>speak(w.en);
     if(curVar()==="audio2en"){key="en";correct=w.en;}
     else{key="th";correct=w.th;}
@@ -184,15 +188,14 @@ function renderQ(){
     $("hint").textContent="คำนี้แปลว่าอะไร?";
     $("q-main").textContent=w.en;
     $("q-ipa").textContent=w.ipa;$("q-pr").textContent=w.pr;
-    $("speak-btn").classList.remove("hidden");
-    $("speak-btn").onclick=()=>speak(w.en);
+    showSpeak(w.en);
     correct=w.th;
     distractors=shuffle(pool.filter(x=>x.th!==w.th)).slice(0,3).map(x=>x.th);
   }else{ // th2en
     $("hint").textContent="คำนี้ภาษาอังกฤษว่าอะไร?";
     $("q-main").textContent=w.th;
     $("q-ipa").textContent="";$("q-pr").textContent="";
-    $("speak-btn").classList.add("hidden");
+    hideSpeak();   // English is the answer — reveal listen button after answering
     correct=w.en;
     distractors=shuffle(pool.filter(x=>x.en!==w.en)).slice(0,3).map(x=>x.en);
   }
@@ -225,6 +228,7 @@ function pick(btn,chosen,correct,w){
     const extra=(mode==="listen"||curVar()==="th2en")?" ("+w.ipa+")":"";
     fb.innerHTML="ยังไม่ถูก คำตอบคือ <b>"+correct+"</b>"+extra;
   }
+  showSpeak(w.en);   // after answering, always allow replaying the English audio
   $("score").textContent=score;$("streak").textContent=streak;
   $("next-btn").classList.remove("hidden");
 }
@@ -234,7 +238,7 @@ function renderTileQ(tokens,promptText,note,hintText,speakText,sep){
   $("choices").classList.add("hidden");
   $("q-main").classList.add("hidden");
   $("q-ipa").textContent="";$("q-pr").textContent="";
-  $("speak-btn").classList.add("hidden");
+  hideSpeak();   // English is the answer — reveal listen button after answering
   $("sentence-area").classList.remove("hidden");
   $("hint").textContent=hintText;
   $("s-prompt").textContent=promptText;
@@ -282,6 +286,7 @@ $("s-check").onclick=()=>{
     fb.innerHTML="ยังไม่ถูก ที่ถูกคือ <b>"+curTarget.join(curSep)+"</b>";
   }
   if(curSpeak)speak(curSpeak);
+  showSpeak(curSpeak);
   showNote(curNote);
   $("s-check").classList.add("hidden");
   $("score").textContent=score;$("streak").textContent=streak;
@@ -295,7 +300,7 @@ function setupSentenceChoice(hintText){
   $("q-main").classList.remove("hidden");
   $("q-main").classList.add("q-sentence");
   $("q-ipa").textContent="";$("q-pr").textContent="";
-  $("speak-btn").classList.add("hidden");
+  hideSpeak();   // English is the answer — reveal listen button after answering
   $("hint").textContent=hintText;
 }
 
@@ -366,6 +371,7 @@ function pickSentence(btn,chosen,correct,note,speakText){
     fb.innerHTML="ยังไม่ถูก คำตอบคือ <b>"+correct+"</b>";
   }
   if(speakText)speak(speakText);
+  showSpeak(speakText);
   showNote(note);
   $("score").textContent=score;$("streak").textContent=streak;
   $("next-btn").classList.remove("hidden");
