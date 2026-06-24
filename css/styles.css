@@ -109,6 +109,28 @@ body {
 /* Global utility */
 .hidden { display: none !important; }
 
+/* Skip link — off-screen until focused via keyboard */
+.skip-link {
+  position: absolute;
+  left: var(--sp-2);
+  top: -100px;
+  z-index: 100;
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: top var(--dur-fast);
+}
+.skip-link:focus {
+  top: var(--sp-2);
+  outline: 2px solid var(--vermilion);
+  outline-offset: 2px;
+}
+
 /* ─── App wrapper ───────────────────────────────────────── */
 .app {
   width: 100%;
@@ -346,7 +368,8 @@ body {
   gap: var(--sp-2);
   /* Touch target */
   min-height: var(--touch-min);
-  padding: var(--sp-1) 0;
+  padding: var(--sp-1) var(--sp-3);
+  margin-left: calc(-1 * var(--sp-3));   /* expand tap zone without shifting text */
   background: none;
   border: none;
   color: var(--ink-faint);
@@ -876,9 +899,9 @@ body {
 
 #mode-grid .opt {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--sp-3);
-  min-height: var(--touch-min);
+  min-height: 56px;   /* uniform height so descriptions can't desync the rows */
 }
 
 #mode-grid .opt .t {
@@ -888,6 +911,11 @@ body {
 
 #mode-grid .opt .d {
   margin-top: 0;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* ─── Sentence game ─────────────────────────────────────── */
@@ -927,6 +955,16 @@ body {
   font-size: var(--text-sm);
   font-family: var(--font-ui);
   margin: auto;
+}
+
+.s-bank-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: var(--sp-2);
 }
 
 /* Word bank */
@@ -994,6 +1032,7 @@ body {
 
 /* Make the clickable 🔊 question glyph feel interactive in listen mode */
 #q-main { cursor: default; }
+#q-main.clickable { cursor: pointer; }
 
 /* ─── Category picker (sentence mode) ───────────────────── */
 .scat-grid {

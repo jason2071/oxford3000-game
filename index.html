@@ -12,7 +12,9 @@
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+<a href="#main-content" class="skip-link">ข้ามไปเนื้อหาหลัก</a>
 <div class="app">
+ <main id="main-content">
 
   <div id="home">
     <h1>Oxford 3000</h1>
@@ -42,12 +44,13 @@
       <div class="q-en" id="q-main">—</div>
       <div class="q-ipa" id="q-ipa"></div>
       <div class="q-pr" id="q-pr"></div>
-      <button type="button" class="speak hidden" id="speak-btn">🔊 ฟังเสียง</button>
+      <button type="button" class="speak hidden" id="speak-btn" aria-label="ฟังการออกเสียงภาษาอังกฤษ"><span aria-hidden="true">🔊</span> ฟังเสียง</button>
       <div class="choices" id="choices"></div>
 
       <div id="sentence-area" class="hidden">
         <div class="s-prompt" id="s-prompt"></div>
         <div class="s-answer" id="s-answer"></div>
+        <div class="s-bank-label">แตะคำด้านล่างเพื่อเพิ่ม</div>
         <div class="s-bank" id="s-bank"></div>
         <button type="button" class="btn" id="s-check" disabled>ตรวจคำตอบ</button>
       </div>
@@ -59,7 +62,7 @@
   </div>
 
   <div id="end" class="hidden">
-    <div class="card end">
+    <div class="card end" role="status" aria-live="polite">
       <h1>จบรอบแล้ว!</h1>
       <div class="big" id="end-score">0</div>
       <div class="msg" id="end-msg"></div>
@@ -68,6 +71,7 @@
     </div>
   </div>
 
+ </main>
 </div>
 
 <script src="js/data.js"></script>

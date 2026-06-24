@@ -10,12 +10,12 @@ const MODES = [
 ];
 const VARIANTS = {
   translate:[
-    {id:"en2th", t:"อังกฤษ → ไทย", d:"เห็นคำอังกฤษ ทายคำแปล"},
-    {id:"th2en", t:"ไทย → อังกฤษ", d:"เห็นคำแปล ทายคำอังกฤษ"},
+    {id:"en2th", t:"อังกฤษ → ไทย", d:"ทายคำแปล"},
+    {id:"th2en", t:"ไทย → อังกฤษ", d:"ทายคำอังกฤษ"},
   ],
   listen:[
-    {id:"audio2en", t:"เลือกคำที่ได้ยิน", d:"ฟัง แล้วเลือกคำอังกฤษ"},
-    {id:"audio2th", t:"เลือกคำแปล",       d:"ฟัง แล้วเลือกคำไทย"},
+    {id:"audio2en", t:"เลือกคำที่ได้ยิน", d:"เลือกคำอังกฤษ"},
+    {id:"audio2th", t:"เลือกคำแปล",       d:"เลือกคำไทย"},
   ],
 };
 
@@ -160,7 +160,7 @@ function renderQ(){
   answered=false;
   $("feedback").textContent="";$("feedback").className="feedback";
   $("next-btn").classList.add("hidden");
-  $("q-main").classList.remove("q-sentence");
+  $("q-main").classList.remove("q-sentence","clickable");
   $("q-main").onclick=null;   // single source of truth; listen mode re-sets it below
   showNote("");
   $("prog").textContent=(idx+1)+"/"+queue.length;
@@ -168,7 +168,7 @@ function renderQ(){
   if(mode==="sentence"){
     const kind=scatKind(curVar()),item=queue[idx];
     if(kind==="order")        renderTileQ(item.en.split(" "), item.th, item.note, "แตะคำ เรียงให้เป็นประโยค", item.en, " ");
-    else if(kind==="scramble")renderTileQ(item.en.split(""), item.th+(item.ipa?" · "+item.ipa:""), null, "เรียงตัวอักษรให้เป็นคำ", item.en, "");
+    else if(kind==="scramble")renderTileQ(item.en.split(""), item.th+(item.ipa?" · "+item.ipa:""), null, "เรียงตัวอักษรให้เป็นคำภาษาอังกฤษ", item.en, "");
     else if(kind==="continue")renderContinuationQ(item);
     else                      renderClozeQ(item);
     return;
@@ -187,6 +187,7 @@ function renderQ(){
     $("q-main").textContent="🔊";
     $("q-ipa").textContent="";$("q-pr").textContent="";
     showSpeak(w.en);
+    $("q-main").classList.add("clickable");
     $("q-main").onclick=()=>speak(w.en);
     if(curVar()==="audio2en"){key="en";correct=w.en;}
     else{key="th";correct=w.th;}
