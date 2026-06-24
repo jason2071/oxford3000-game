@@ -66,7 +66,9 @@ function renderHome(){
   const mg=$("mode-grid");mg.innerHTML="";
   MODES.forEach(m=>{
     const b=document.createElement("button");
+    b.type="button";
     b.className="opt"+(m.id===mode?" active":"");
+    b.setAttribute("aria-pressed",m.id===mode?"true":"false");
     b.innerHTML=`<span class="t">${m.t}</span><div class="d">${m.d}</div>`;
     b.onclick=()=>{mode=m.id;renderHome();};
     mg.appendChild(b);
@@ -76,7 +78,9 @@ function renderHome(){
   const unit=(mode==="sentence"&&scatKind(curVar())!=="scramble")?"ประโยค":"คำ";
   LEVELS.forEach(lv=>{
     const b=document.createElement("button");
+    b.type="button";
     b.className="opt"+(lv===level?" active":"");
+    b.setAttribute("aria-pressed",lv===level?"true":"false");
     b.innerHTML=`<span class="t">${lv}</span> <span class="d">${LV_DESC[lv]}</span>
       <div class="d">${poolCount(lv)} ${unit}</div>
       <div class="best">สถิติ ${bestFor(mode,lv,curVar())} คะแนน</div>`;
@@ -91,7 +95,9 @@ function renderHome(){
     vr.className="grid scat-grid";vr.classList.remove("hidden");
     SCATS.forEach(c=>{
       const b=document.createElement("button");
+      b.type="button";
       b.className="opt"+(c.key===curVar()?" active":"");
+      b.setAttribute("aria-pressed",c.key===curVar()?"true":"false");
       b.innerHTML=`<span class="t">${c.label}</span><div class="d">${KIND_TAG[c.kind]}</div>`;
       b.onclick=()=>{variant.sentence=c.key;renderHome();};
       vr.appendChild(b);
@@ -102,7 +108,9 @@ function renderHome(){
     vl.textContent="รูปแบบคำถาม";vl.classList.remove("hidden");vr.classList.remove("hidden");
     vs.forEach(v=>{
       const b=document.createElement("button");
+      b.type="button";
       b.className="opt"+(v.id===curVar()?" active":"");
+      b.setAttribute("aria-pressed",v.id===curVar()?"true":"false");
       b.innerHTML=`<span class="t">${v.t}</span><div class="d">${v.d}</div>`;
       b.onclick=()=>{variant[mode]=v.id;renderHome();};
       vr.appendChild(b);
@@ -204,6 +212,7 @@ function renderQ(){
   const box=$("choices");box.innerHTML="";
   opts.forEach(o=>{
     const b=document.createElement("button");
+    b.type="button";
     b.className="choice";b.textContent=o;
     b.onclick=()=>pick(b,o,correct,w);
     box.appendChild(b);
@@ -254,6 +263,7 @@ function drawTiles(){
   const letter=(curSep==="");
   sBank.forEach(tk=>{
     const b=document.createElement("button");
+    b.type="button";
     b.className="tile"+(letter?" letter":"");b.textContent=tk.w;
     b.onclick=()=>{if(answered)return;
       sBank=sBank.filter(x=>x.id!==tk.id);sAnswer.push(tk);drawTiles();};
@@ -261,6 +271,7 @@ function drawTiles(){
   });
   sAnswer.forEach(tk=>{
     const b=document.createElement("button");
+    b.type="button";
     b.className="tile in-answer"+(letter?" letter":"");b.textContent=tk.w;
     b.onclick=()=>{if(answered)return;
       sAnswer=sAnswer.filter(x=>x.id!==tk.id);sBank.push(tk);drawTiles();};
@@ -348,6 +359,7 @@ function renderSChoices(opts,correct,note,speakText){
   // opts/correct are authored static data (sentences/words) — never user input — so innerHTML below is safe
   shuffle(opts).forEach(o=>{
     const b=document.createElement("button");
+    b.type="button";
     b.className="choice";b.textContent=o;
     b.onclick=()=>pickSentence(b,o,correct,note,speakText);
     box.appendChild(b);

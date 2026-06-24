@@ -13,7 +13,7 @@
   /* Palette */
   --ink:          #1a1c2e;  /* deep Oxford navy-black */
   --ink-mid:      #3a3d56;  /* secondary text */
-  --ink-faint:    #7a7d96;  /* muted / labels */
+  --ink-faint:    #5e607a;  /* muted / labels — WCAG AA on paper surfaces */
   --paper:        #f5f0e8;  /* aged cream background */
   --paper-warm:   #ede8dc;  /* surface / card backgrounds */
   --paper-white:  #fdfaf5;  /* near-white for question card */
@@ -395,7 +395,7 @@ body {
 }
 
 .stat .l {
-  font-size: 10px;
+  font-size: var(--text-xs);
   color: var(--ink-faint);
   letter-spacing: 0.07em;
   text-transform: uppercase;

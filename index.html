@@ -27,34 +27,34 @@
     <div class="label" id="variant-label">รูปแบบคำถาม</div>
     <div class="row2" id="variant-row"></div>
 
-    <button class="btn" id="start-btn">เริ่มเล่น</button>
+    <button type="button" class="btn" id="start-btn">เริ่มเล่น</button>
   </div>
 
   <div id="game" class="hidden">
-    <button class="back" id="back-btn">← กลับหน้าหลัก</button>
+    <button type="button" class="back" id="back-btn">← กลับหน้าหลัก</button>
     <div class="stats">
-      <div class="stat"><div class="l">คะแนน</div><div class="v" id="score">0</div></div>
-      <div class="stat"><div class="l">ถูกติดกัน</div><div class="v" id="streak">0</div></div>
-      <div class="stat"><div class="l">ข้อ</div><div class="v" id="prog">1/10</div></div>
+      <div class="stat"><div class="l">คะแนน</div><div class="v" id="score" aria-live="polite">0</div></div>
+      <div class="stat"><div class="l">ถูกติดกัน</div><div class="v" id="streak" aria-live="polite">0</div></div>
+      <div class="stat"><div class="l">ข้อ</div><div class="v" id="prog" aria-live="polite">1/10</div></div>
     </div>
     <div class="card">
       <div class="q-hint" id="hint">คำนี้แปลว่าอะไร?</div>
       <div class="q-en" id="q-main">—</div>
       <div class="q-ipa" id="q-ipa"></div>
       <div class="q-pr" id="q-pr"></div>
-      <button class="speak hidden" id="speak-btn">🔊 ฟังเสียง</button>
+      <button type="button" class="speak hidden" id="speak-btn">🔊 ฟังเสียง</button>
       <div class="choices" id="choices"></div>
 
       <div id="sentence-area" class="hidden">
         <div class="s-prompt" id="s-prompt"></div>
         <div class="s-answer" id="s-answer"></div>
         <div class="s-bank" id="s-bank"></div>
-        <button class="btn" id="s-check" disabled>ตรวจคำตอบ</button>
+        <button type="button" class="btn" id="s-check" disabled>ตรวจคำตอบ</button>
       </div>
 
-      <div class="feedback" id="feedback"></div>
-      <div class="s-note hidden" id="s-note"></div>
-      <button class="btn hidden" id="next-btn">ข้อต่อไป →</button>
+      <div class="feedback" id="feedback" aria-live="assertive"></div>
+      <div class="s-note hidden" id="s-note" aria-live="polite"></div>
+      <button type="button" class="btn hidden" id="next-btn">ข้อต่อไป →</button>
     </div>
   </div>
 
@@ -63,8 +63,8 @@
       <h1>จบรอบแล้ว!</h1>
       <div class="big" id="end-score">0</div>
       <div class="msg" id="end-msg"></div>
-      <button class="btn" id="replay-btn">เล่นอีกรอบ</button>
-      <div class="btn-row"><button class="btn ghost" id="home-btn">เปลี่ยนระดับ</button></div>
+      <button type="button" class="btn" id="replay-btn">เล่นอีกรอบ</button>
+      <div class="btn-row"><button type="button" class="btn ghost" id="home-btn">เปลี่ยนระดับ</button></div>
     </div>
   </div>
 
