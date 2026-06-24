@@ -994,3 +994,57 @@ body {
 
 /* Make the clickable 🔊 question glyph feel interactive in listen mode */
 #q-main { cursor: default; }
+
+/* ─── Category picker (sentence mode) ───────────────────── */
+.scat-grid {
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2);
+}
+
+.scat-grid .opt {
+  min-height: var(--touch-min);
+  padding: var(--sp-3);
+}
+
+.scat-grid .opt .t {
+  font-size: var(--text-base);
+  font-family: var(--font-ui);
+  font-weight: 600;
+}
+
+.scat-grid .opt .d {
+  margin-top: 2px;
+  font-size: var(--text-xs);
+}
+
+/* ─── Sentence shown above multiple-choice (continue/cloze) ─ */
+.q-en.q-sentence {
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 600;
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+/* ─── Grammar / word-usage note (after answering) ───────── */
+.s-note {
+  margin: var(--sp-2) 0 var(--sp-1);
+  padding: var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-4);
+  border-left: 3px solid var(--vermilion);
+  background: var(--paper-warm);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--ink-mid);
+  animation: fadeSlideUp var(--dur-base) var(--ease-out) both;
+}
+
+/* ─── Letter tiles (scramble mini-game) ─────────────────── */
+.tile.letter {
+  min-width: 44px;
+  padding: var(--sp-2) var(--sp-3);
+  text-align: center;
+  text-transform: lowercase;
+}

@@ -7,11 +7,18 @@
 
 ## Features
 
-- 📚 คำศัพท์ Oxford 3000 แยกตามระดับ CEFR — A1 (744), A2 (803), B1 (702), B2 (604)
-- 🔄 2 โหมด: อังกฤษ → ไทย และ ไทย → อังกฤษ
+3 โหมดหลัก แยกตามระดับ CEFR (A1/A2/B1/B2):
+
+1. **ทายคำแปล** — อังกฤษ → ไทย และ ไทย → อังกฤษ (2,853 คำ)
+2. **ฟังเสียงทาย** — ฟังเสียงอังกฤษ แล้วเลือกคำ/คำแปล (2 sub-mode)
+3. **ประโยค & ไวยากรณ์** — 10 หมวด พร้อมคำอธิบายไวยากรณ์หลังตอบ:
+   - 7 หมวดเรียงประโยค: เดินทาง · ร้านอาหาร · ทำงาน · ช้อปปิ้ง · กาลเวลา · ชนิดของคำ · ประเภทประโยค (280 ประโยคพร้อม note)
+   - มินิเกม: **ต่อประโยค** (เลือกส่วนต่อ) · **สุ่มคำดิบ** (สะกดคำจากตัวอักษร) · **ทายคำจากประโยค** (cloze)
+
 - 🔊 ฟังเสียงอ่าน (Web Speech API) พร้อม IPA + คำอ่านไทย
+- 📝 คำอธิบายไวยากรณ์ + คำสำคัญ ทุกประโยค (โหมดประโยค)
 - 🔥 ระบบคะแนน + streak (ตอบถูกติดกันได้โบนัส)
-- 🏆 เก็บสถิติคะแนนสูงสุดต่อระดับ/โหมด ผ่าน `localStorage`
+- 🏆 เก็บสถิติคะแนนสูงสุดแยกต่อโหมด/หมวด/ระดับ ผ่าน `localStorage`
 - 📱 Mobile-first, รองรับ `prefers-reduced-motion`
 
 ## Tech Stack
@@ -24,13 +31,14 @@ Vanilla HTML / CSS / JavaScript — ไม่มี dependency, ไม่มี 
 ## Structure
 
 ```
-index.html        markup + font links (icon ฝังเป็น inline SVG)
-css/styles.css    design system + responsive + animations
-js/data.js        WORDS dataset (en, th, ipa, pr, lv) — โหลดก่อน app.js
-js/app.js         game logic (state, render, scoring, speech)
+index.html         markup + font links (icon ฝังเป็น inline SVG)
+css/styles.css     design system + responsive + animations
+js/data.js         WORDS dataset (en, th, ipa, pr, lv) — 2,853 คำ
+js/sentences.js    SENTENCES dataset (en, th, lv, cat, note) — 280 ประโยค, 7 หมวด
+js/app.js          game logic (modes, category dispatch, mini-games, scoring)
 ```
 
-> `data.js` ต้องโหลดก่อน `app.js` เพราะ `app.js` ใช้ global `WORDS`
+> `data.js` + `sentences.js` ต้องโหลดก่อน `app.js` (app ใช้ global `WORDS` / `SENTENCES`)
 
 ## รันในเครื่อง
 
