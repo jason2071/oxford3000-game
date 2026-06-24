@@ -16,16 +16,16 @@
 
   <div id="home">
     <h1>Oxford 3000</h1>
-    <div class="sub">เกมฝึกคำศัพท์ 2,853 คำ จากไฟล์ MEMMOREAD</div>
+    <div class="sub">ฝึกคำศัพท์ การฟัง และการเรียงประโยค · 2,853 คำ</div>
+
+    <div class="label">เลือกโหมด</div>
+    <div class="grid" id="mode-grid"></div>
 
     <div class="label">เลือกระดับ (CEFR)</div>
     <div class="grid" id="level-grid"></div>
 
-    <div class="label">รูปแบบคำถาม</div>
-    <div class="row2">
-      <button class="opt active" data-dir="en2th"><span class="t">อังกฤษ → ไทย</span><div class="d">เห็นคำอังกฤษ ทายคำแปล</div></button>
-      <button class="opt" data-dir="th2en"><span class="t">ไทย → อังกฤษ</span><div class="d">เห็นคำแปล ทายคำอังกฤษ</div></button>
-    </div>
+    <div class="label" id="variant-label">รูปแบบคำถาม</div>
+    <div class="row2" id="variant-row"></div>
 
     <button class="btn" id="start-btn">เริ่มเล่น</button>
   </div>
@@ -44,6 +44,14 @@
       <div class="q-pr" id="q-pr"></div>
       <button class="speak hidden" id="speak-btn">🔊 ฟังเสียง</button>
       <div class="choices" id="choices"></div>
+
+      <div id="sentence-area" class="hidden">
+        <div class="s-prompt" id="s-prompt"></div>
+        <div class="s-answer" id="s-answer"></div>
+        <div class="s-bank" id="s-bank"></div>
+        <button class="btn" id="s-check" disabled>ตรวจคำตอบ</button>
+      </div>
+
       <div class="feedback" id="feedback"></div>
       <button class="btn hidden" id="next-btn">ข้อต่อไป →</button>
     </div>
@@ -62,6 +70,7 @@
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/sentences.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

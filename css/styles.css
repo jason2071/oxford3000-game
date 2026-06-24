@@ -867,3 +867,130 @@ body {
 ::-webkit-scrollbar-track { background: var(--paper); }
 ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+
+/* ─── Mode picker (home) ────────────────────────────────── */
+#mode-grid {
+  grid-template-columns: 1fr;   /* stacked, one mode per row */
+  gap: var(--sp-2);
+}
+
+#mode-grid .opt {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  min-height: var(--touch-min);
+}
+
+#mode-grid .opt .t {
+  font-size: var(--text-lg);
+  white-space: nowrap;
+}
+
+#mode-grid .opt .d {
+  margin-top: 0;
+}
+
+/* ─── Sentence game ─────────────────────────────────────── */
+#sentence-area {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--rule-light);
+}
+
+.s-prompt {
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.5;
+  margin-bottom: var(--sp-4);
+}
+
+/* Assembled answer line — reads like a fill-in blank in a workbook */
+.s-answer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  min-height: 54px;
+  padding: var(--sp-3);
+  margin-bottom: var(--sp-4);
+  border: 1.5px dashed var(--rule);
+  border-radius: var(--radius-md);
+  background: var(--paper-white);
+  align-content: flex-start;
+}
+
+.s-answer:empty::before {
+  content: 'แตะคำด้านล่างเพื่อเรียงประโยค';
+  color: var(--ink-faint);
+  font-size: var(--text-sm);
+  font-family: var(--font-ui);
+  margin: auto;
+}
+
+/* Word bank */
+.s-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  justify-content: center;
+  min-height: 40px;
+}
+
+/* Word tile — generous touch target, letterpress feel */
+.tile {
+  min-height: var(--touch-min);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1.5px solid var(--rule);
+  border-radius: var(--radius-md);
+  background: var(--paper-warm);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  cursor: pointer;
+  box-shadow: 0 2px 0 var(--rule-light);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background   var(--dur-fast),
+    transform    var(--dur-fast) var(--ease-out),
+    box-shadow   var(--dur-fast) var(--ease-out);
+  animation: fadeSlideUp var(--dur-base) var(--ease-out) both;
+}
+
+.tile:hover:not(:disabled) {
+  border-color: var(--ink);
+  background: var(--paper);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 var(--ink-mid);
+}
+
+.tile:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 var(--rule);
+}
+
+.tile.in-answer {
+  border-color: var(--ink-mid);
+  background: var(--paper);
+  border-style: solid;
+}
+
+.tile.correct {
+  background: var(--jade-bg);
+  border-color: var(--jade);
+  color: var(--jade-d);
+  box-shadow: 0 2px 0 var(--jade);
+  animation: pulseGreen 480ms var(--ease-out) forwards;
+}
+
+.tile.wrong {
+  background: var(--danger-bg);
+  border-color: var(--vermilion);
+  color: var(--vermilion-d);
+  box-shadow: 0 2px 0 var(--vermilion);
+  animation: shakeX 340ms var(--ease-out) forwards;
+}
+
+/* Make the clickable 🔊 question glyph feel interactive in listen mode */
+#q-main { cursor: default; }
