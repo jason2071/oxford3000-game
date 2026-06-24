@@ -450,10 +450,10 @@ body {
   /* Fluid: comfortable on 360px without overflow */
   font-size: clamp(2rem, 10vw, var(--text-4xl));
   font-weight: 700;
-  font-style: italic;
+  font-style: normal;
   text-align: center;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   color: var(--ink);
   margin: 0 0 var(--sp-2);
   /* Prevent very long words from breaking card */
