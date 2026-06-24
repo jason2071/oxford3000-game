@@ -43,6 +43,12 @@ let curTarget=[], curNote="", curSpeak="", curSep=" ";   // tile-check context
 
 const WEN = new Set(WORDS.map(w=>w.en.toLowerCase()));   // for cloze blanks
 const $=id=>document.getElementById(id);
+// Inline speaker icon for listen mode (replaces the OS 🔊 emoji)
+const SPEAKER_SVG='<span class="listen-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a9 9 0 0 1 0 14"/></svg></span>';
+// "Correct" feedback markup with the emoji/glyph hidden from screen readers
+function okMsg(){return streak>=3
+  ?('เยี่ยม! ถูกติดกัน '+streak+' ข้อ <span aria-hidden="true">🔥</span>')
+  :('ถูกต้อง! <span aria-hidden="true">✓</span>');}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function byLevel(lv){return WORDS.filter(w=>w.lv===lv);}
 function spellable(lv){return byLevel(lv).filter(w=>/^[a-z]+$/i.test(w.en)&&w.en.length>=3&&w.en.length<=10);}
@@ -185,7 +191,8 @@ function hideSpeak(){const b=$("speak-btn");b.classList.add("hidden");b.onclick=
 function showNote(t){
   const el=$("s-note");
   if(!t){el.classList.add("hidden");el.textContent="";return;}
-  el.textContent="📝 "+t;el.classList.remove("hidden");
+  // t is authored static data (never user input) — safe to inject
+  el.innerHTML='<span aria-hidden="true">📝</span> '+t;el.classList.remove("hidden");
 }
 
 /* ── Question dispatch ───────────────────────────────── */
@@ -194,6 +201,7 @@ function renderQ(){
   $("feedback").textContent="";$("feedback").className="feedback";
   $("next-btn").classList.add("hidden");
   $("q-main").classList.remove("q-sentence","clickable");
+  $("speak-btn").classList.remove("primary");
   $("q-main").onclick=null;   // single source of truth; listen mode re-sets it below
   showNote("");
   $("prog").textContent=(idx+1)+"/"+queue.length;
@@ -218,9 +226,10 @@ function renderQ(){
 
   if(mode==="listen"){
     $("hint").textContent=curVar()==="audio2en"?"ฟังแล้วเลือกคำที่ได้ยิน":"ฟังแล้วเลือกคำแปล";
-    $("q-main").textContent="🔊";
+    $("q-main").innerHTML=SPEAKER_SVG;
     $("q-ipa").textContent="";$("q-pr").textContent="";
     showSpeak(w.en);
+    $("speak-btn").classList.add("primary");
     $("q-main").classList.add("clickable");
     $("q-main").onclick=()=>speak(w.en);
     if(curVar()==="audio2en"){key="en";correct=w.en;}
@@ -264,13 +273,13 @@ function pick(btn,chosen,correct,w){
   if(chosen===correct){
     score+=10+streak*2;streak++;
     fb.className="feedback ok";
-    fb.textContent=streak>=3?("เยี่ยม! ถูกติดกัน "+streak+" ข้อ 🔥"):"ถูกต้อง! ✓";
+    fb.innerHTML=okMsg();
     if(mode==="translate"&&curVar()==="th2en")speak(w.en);
   }else{
     streak=0;btn.classList.add("wrong");
     fb.className="feedback no";
     const extra=(mode==="listen"||curVar()==="th2en")?" ("+w.ipa+")":"";
-    fb.innerHTML="ยังไม่ถูก คำตอบคือ <b>"+correct+"</b>"+extra;
+    fb.innerHTML="ยังไม่ถูก คำตอบคือ <strong>"+correct+"</strong>"+extra;
   }
   showSpeak(w.en);   // after answering, always allow replaying the English audio
   $("score").textContent=score;$("streak").textContent=streak;
@@ -325,11 +334,11 @@ $("s-check").onclick=()=>{
   if(ok){
     score+=10+streak*2;streak++;
     fb.className="feedback ok";
-    fb.textContent=streak>=3?("เยี่ยม! ถูกติดกัน "+streak+" ข้อ 🔥"):"ถูกต้อง! ✓";
+    fb.innerHTML=okMsg();
   }else{
     streak=0;
     fb.className="feedback no";
-    fb.innerHTML="ยังไม่ถูก ที่ถูกคือ <b>"+curTarget.join(curSep)+"</b>";
+    fb.innerHTML="ยังไม่ถูก ที่ถูกคือ <strong>"+curTarget.join(curSep)+"</strong>";
   }
   if(curSpeak)speak(curSpeak);
   showSpeak(curSpeak);
@@ -411,11 +420,11 @@ function pickSentence(btn,chosen,correct,note,speakText){
   if(chosen===correct){
     score+=10+streak*2;streak++;
     fb.className="feedback ok";
-    fb.textContent=streak>=3?("เยี่ยม! ถูกติดกัน "+streak+" ข้อ 🔥"):"ถูกต้อง! ✓";
+    fb.innerHTML=okMsg();
   }else{
     streak=0;btn.classList.add("wrong");
     fb.className="feedback no";
-    fb.innerHTML="ยังไม่ถูก คำตอบคือ <b>"+correct+"</b>";
+    fb.innerHTML="ยังไม่ถูก คำตอบคือ <strong>"+correct+"</strong>";
   }
   if(speakText)speak(speakText);
   showSpeak(speakText);

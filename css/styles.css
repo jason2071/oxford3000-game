@@ -17,8 +17,8 @@
   --paper:        #f5f0e8;  /* aged cream background */
   --paper-warm:   #ede8dc;  /* surface / card backgrounds */
   --paper-white:  #fdfaf5;  /* near-white for question card */
-  --rule:         #c8c2b0;  /* hairline dividers */
-  --rule-light:   #ddd8cc;  /* lighter divider */
+  --rule:         #a8a298;  /* component borders — ~3:1 for WCAG 1.4.11 */
+  --rule-light:   #ddd8cc;  /* lighter divider (decorative hairlines) */
 
   /* Accent */
   --vermilion:    #c0392b;  /* Oxford red — primary CTA */
@@ -95,6 +95,7 @@ body {
   padding: var(--sp-5) var(--sp-4) var(--sp-12);
   display: flex;
   justify-content: center;
+  align-items: flex-start;   /* keep content anchored to top on tall desktop viewports */
   /* Subtle ledger-line paper texture */
   background-image:
     repeating-linear-gradient(
@@ -134,7 +135,7 @@ body {
 /* ─── App wrapper ───────────────────────────────────────── */
 .app {
   width: 100%;
-  max-width: 560px;
+  max-width: 600px;
 }
 
 /* ─── HOME ──────────────────────────────────────────────── */
@@ -227,9 +228,9 @@ body {
 
 .opt.active {
   background: var(--ink);
-  border-color: var(--ink);
+  border-color: var(--vermilion);   /* accent ring so selection doesn't rely on inversion alone */
   color: var(--paper);
-  box-shadow: 0 3px 0 var(--ink-mid);
+  box-shadow: 0 3px 0 var(--vermilion-d);
 }
 
 /* Level large label */
@@ -539,6 +540,14 @@ body {
   background: var(--paper-warm);
 }
 
+/* Listen mode: the speak button is the primary action, so make it louder */
+.speak.primary {
+  border-color: var(--ink-mid);
+  background: var(--paper-warm);
+  color: var(--ink);
+  font-size: var(--text-sm);
+}
+
 .speak:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
@@ -603,7 +612,7 @@ body {
 
 .choice:disabled {
   cursor: default;
-  opacity: 0.5;
+  opacity: 0.72;   /* still readable for post-answer review (correct/wrong stay full) */
 }
 
 /* ── Correct ── */
@@ -1033,6 +1042,16 @@ body {
 /* Make the clickable 🔊 question glyph feel interactive in listen mode */
 #q-main { cursor: default; }
 #q-main.clickable { cursor: pointer; }
+
+/* Listen-mode speaker glyph — inline SVG instead of an OS emoji */
+.listen-icon {
+  display: inline-flex;
+  color: var(--vermilion);
+}
+.listen-icon svg {
+  width: 52px;
+  height: 52px;
+}
 
 /* ─── Category picker (sentence mode) ───────────────────── */
 .scat-grid {
