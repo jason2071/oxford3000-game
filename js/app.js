@@ -61,6 +61,38 @@ function bestFor(m,lv,v){try{return parseInt(localStorage.getItem(bestKey(m,lv,v
 function bestGet(){return bestFor(mode,level,curVar());}
 function bestSet(val){try{if(val>bestGet())localStorage.setItem(bestKey(mode,level,curVar()),val);}catch(e){}}
 
+/* ── Session persistence (survive page refresh) ──────────
+   view="game" stores the in-progress round so a refresh resumes the
+   current question (the partial answer of the live question is dropped —
+   we re-render it fresh). view="home" keeps only the menu selections. */
+const SKEY="ox_session";
+function saveState(view){
+  try{
+    const s={v:1,view,mode,level,variant};
+    if(view==="game"){s.queue=queue;s.idx=idx;s.score=score;s.streak=streak;}
+    localStorage.setItem(SKEY,JSON.stringify(s));
+  }catch(e){}
+}
+function restoreState(){
+  try{
+    const raw=localStorage.getItem(SKEY);if(!raw)return false;
+    const s=JSON.parse(raw);if(!s||s.v!==1)return false;
+    if(s.mode)mode=s.mode;
+    if(s.level)level=s.level;
+    if(s.variant)Object.assign(variant,s.variant);
+    if(s.view==="game"&&Array.isArray(s.queue)&&s.queue.length){
+      queue=s.queue;idx=Math.min(s.idx||0,queue.length-1);
+      score=s.score||0;streak=s.streak||0;
+      renderHome();
+      $("home").classList.add("hidden");$("end").classList.add("hidden");$("game").classList.remove("hidden");
+      $("score").textContent=score;$("streak").textContent=streak;
+      renderQ();
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+
 /* ── Home ─────────────────────────────────────────────── */
 function renderHome(){
   const mg=$("mode-grid");mg.innerHTML="";
@@ -116,6 +148,7 @@ function renderHome(){
       vr.appendChild(b);
     });
   }
+  if($("game").classList.contains("hidden"))saveState("home");
 }
 
 /* ── Start / speech ──────────────────────────────────── */
@@ -164,6 +197,7 @@ function renderQ(){
   $("q-main").onclick=null;   // single source of truth; listen mode re-sets it below
   showNote("");
   $("prog").textContent=(idx+1)+"/"+queue.length;
+  saveState("game");
 
   if(mode==="sentence"){
     const kind=scatKind(curVar()),item=queue[idx];
@@ -398,6 +432,7 @@ $("home-btn").onclick=goHome;
 
 function endGame(){
   bestSet(score);
+  saveState("home");   // round finished — drop the resume state, keep selections
   $("game").classList.add("hidden");$("end").classList.remove("hidden");
   $("end-score").textContent=score+" คะแนน";
   const top=score>=queue.length*16;
@@ -407,5 +442,7 @@ function endGame(){
   else msg="ดีขึ้นเรื่อยๆ ลองอีกรอบนะ สู้ๆ";
   $("end-msg").textContent=msg+" · สถิติดีสุด "+bestGet()+" คะแนน";
 }
-function goHome(){$("game").classList.add("hidden");$("end").classList.add("hidden");$("home").classList.remove("hidden");renderHome();}
-renderHome();
+function goHome(){$("game").classList.add("hidden");$("end").classList.add("hidden");$("home").classList.remove("hidden");saveState("home");renderHome();}
+
+// Boot: resume an in-progress round if one was saved, else show home.
+if(!restoreState())renderHome();
